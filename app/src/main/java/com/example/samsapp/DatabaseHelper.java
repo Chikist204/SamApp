@@ -41,7 +41,7 @@ public class DatabaseHelper {
 
     public DatabaseHelper(Context context) {
         OpenHelper mOpenHelper = new OpenHelper(context);
-        mDataBase = mOpenHelper.getReadableDatabase();
+        mDataBase = mOpenHelper.getWritableDatabase();
     }
 
     public long insert(String username, String name, String role, String group, String email, String hashed_password) {
@@ -82,8 +82,6 @@ public class DatabaseHelper {
             return false;
     }
 
-
-
     public Students select(String username) {
         Cursor mCursor = mDataBase.query(TABLE_NAME, null, COLUMN_USERNAME + " = ?", new String[]{String.valueOf(username)}, null, null, null);
         mCursor.moveToFirst();
@@ -97,8 +95,27 @@ public class DatabaseHelper {
         return new Students(Id, Username, Name, Role, Group, Email, Password);
     }
 
+    public ArrayList<Students> selectGr(String group) {
+        Cursor mCursor = mDataBase.query(TABLE_NAME, null, COLUMN_GROUP + " = ?", new String[]{String.valueOf(group)}, null, null, null);
+        ArrayList<Students> arr = new ArrayList<Students>();
+        mCursor.moveToFirst();
+        if (!mCursor.isAfterLast()) {
+            do {
+                long id = mCursor.getLong(NUM_COLUMN_ID);
+                String Username = mCursor.getString(NUM_COLUMN_USERNAME);
+                String Name = mCursor.getString(NUM_COLUMN_NAME);
+                String Role = mCursor.getString(NUM_COLUMN_ROLE);
+                String Group = mCursor.getString(NUM_COLUMN_GROUPS);
+                String Email = mCursor.getString(NUM_COLUMN_EMAIL);
+                String Password = mCursor.getString(NUM_COLUMN_HASHED_PASSWORD);
+                arr.add(new Students(id, Username, Name, Role, Group, Email, Password));
+            } while (mCursor.moveToNext());
+        }
+        return arr;
+    }
+
     public ArrayList<Students> selectAll() {
-        Cursor mCursor = mDataBase.rawQuery("SELECT * FROM " + TABLE_NAME + "", null);
+        Cursor mCursor = mDataBase.query(TABLE_NAME, null, null, null, null, null, null);
 
         ArrayList<Students> arr = new ArrayList<Students>();
         mCursor.moveToFirst();
@@ -124,7 +141,15 @@ public class DatabaseHelper {
         }
         @Override
         public void onCreate(SQLiteDatabase db) {
-
+            String query = "CREATE TABLE " + TABLE_NAME + " (" +
+                    COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                    COLUMN_USERNAME + " TEXT, " +
+                    COLUMN_NAME + " TEXT, " +
+                    COLUMN_ROLE + " TEXT,"+
+                    COLUMN_GROUP +" TEXT," +
+                    COLUMN_EMAIL +" TEXT," +
+                    COLUMN_HASHED_PASSWORD +" TEXT);";
+            db.execSQL(query);
         }
 
         @Override

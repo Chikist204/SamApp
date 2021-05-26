@@ -20,6 +20,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.SimpleCursorAdapter;
 import android.widget.TextView;
@@ -51,16 +52,32 @@ public class GroupsFragment extends Fragment {
 
         sListView = (ListView) binding.listView4;
         Button button = binding.button2;
+        Button button1 = binding.button3;
+        EditText editText1 = binding.editGroup;
+        EditText editText2 = binding.addUsername;
+        EditText editText3 = binding.addName;
+        EditText editText4 = binding.addGroup;
         STConnector = new DatabaseHelper(getContext());
-        myAdapter = new myListAdapter(getContext(), STConnector.selectAll());
-        sListView.setAdapter(myAdapter);
 
+
+        button.setText("Сортировать по классу");
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                System.out.println(STConnector.selectAll().get(0));
+                myAdapter = new myListAdapter(getContext(), STConnector.selectGr(editText1.getText().toString()));
+                sListView.setAdapter(myAdapter);
             }
             });
+
+        button1.setText("Добавить");
+        button1.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String s = "123456cc";
+                if(!editText2.getText().toString().equals("") && !editText3.getText().toString().equals("") && !editText4.getText().toString().equals(""))
+                    STConnector.insert(editText2.getText().toString(), editText3.getText().toString(), "U", editText4.getText().toString(), " ", String.valueOf(s.hashCode()));
+            }
+        });
 
         return root;
     }
