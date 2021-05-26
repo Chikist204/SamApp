@@ -58,7 +58,7 @@ public class GroupsFragment extends Fragment {
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                System.out.println(STConnector.selectAll().get(0).t);
+                System.out.println(STConnector.selectAll().get(0));
             }
             });
 

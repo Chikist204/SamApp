@@ -31,11 +31,6 @@ public class HomeFragment extends Fragment {
         binding = FragmentHomeBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
 
-        if (((GlobalClass) getActivity().getApplicationContext()).isAuthorized())
-            System.out.println(1);
-        else
-            System.out.println(2);
-
         return root;
     }
 
