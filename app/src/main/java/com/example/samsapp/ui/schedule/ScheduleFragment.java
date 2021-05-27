@@ -1,5 +1,6 @@
 package com.example.samsapp.ui.schedule;
 
+import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -31,6 +32,7 @@ public class ScheduleFragment extends Fragment {
     private ScheduleViewModel scheduleViewModel;
     private FragmentScheduleBinding binding;
 
+    @SuppressLint("SetTextI18n")
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
         scheduleViewModel =
@@ -47,7 +49,6 @@ public class ScheduleFragment extends Fragment {
             public void onClick(View view) {
                 String selected = spinner.getSelectedItem().toString();
                 String day = spinner1.getSelectedItem().toString();
-                Toast.makeText(getContext(), selected, Toast.LENGTH_SHORT).show();
                 try {
                     MyCompanyAdapter2 adapter = null;
                     adapter = new MyCompanyAdapter2(getContext(), run(selected, day));

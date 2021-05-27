@@ -8,36 +8,37 @@
 
     <Spinner
         android:id="@+id/spinner"
-        android:layout_width="345dp"
-        android:layout_height="29dp"
+        android:layout_width="303dp"
+        android:layout_height="41dp"
         android:layout_marginTop="36dp"
-        android:entries="@array/groups"
         android:background="@color/dark_blue"
+        android:entries="@array/groups"
+        android:gravity="center_horizontal"
         android:textAlignment="center"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        android:gravity="center_horizontal" />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <Spinner
         android:id="@+id/spinner2"
-        android:layout_width="345dp"
-        android:layout_height="29dp"
+        android:layout_width="303dp"
+        android:layout_height="41dp"
         android:layout_marginTop="92dp"
         android:background="@color/dark_blue"
         android:entries="@array/days"
+        android:gravity="center_horizontal"
         android:textAlignment="center"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        android:gravity="center_horizontal" />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <Button
         android:id="@+id/button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="148dp"
-        android:text="Button"
+        android:text="@string/sched"
+        android:textColor="@color/white"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
@@ -49,6 +50,7 @@
         android:layout_height="465dp"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="44dp"
+        android:background="@color/dark_blue"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/button" />

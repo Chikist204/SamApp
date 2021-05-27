@@ -41,7 +41,7 @@ public class DatabaseHelper {
 
     public DatabaseHelper(Context context) {
         OpenHelper mOpenHelper = new OpenHelper(context);
-        mDataBase = mOpenHelper.getReadableDatabase();
+        mDataBase = mOpenHelper.getWritableDatabase();
     }
 
     public long insert(String username, String name, String role, String group, String email, String hashed_password) {
@@ -82,8 +82,6 @@ public class DatabaseHelper {
             return false;
     }
 
-
-
     public Students select(String username) {
         Cursor mCursor = mDataBase.query(TABLE_NAME, null, COLUMN_USERNAME + " = ?", new String[]{String.valueOf(username)}, null, null, null);
         mCursor.moveToFirst();
@@ -97,9 +95,8 @@ public class DatabaseHelper {
         return new Students(Id, Username, Name, Role, Group, Email, Password);
     }
 
-    public ArrayList<Students> selectAll() {
-        Cursor mCursor = mDataBase.rawQuery("SELECT * FROM " + TABLE_NAME + "", null);
-
+    public ArrayList<Students> selectGr(String group) {
+        Cursor mCursor = mDataBase.query(TABLE_NAME, null, COLUMN_GROUP + " = ?", new String[]{String.valueOf(group)}, null, null, null);
         ArrayList<Students> arr = new ArrayList<Students>();
         mCursor.moveToFirst();
         if (!mCursor.isAfterLast()) {
@@ -117,6 +114,39 @@ public class DatabaseHelper {
         return arr;
     }
 
+    public ArrayList<Students> selectAll() {
+        Cursor mCursor = mDataBase.query(TABLE_NAME, null, null, null, null, null, null);
+
+        ArrayList<Students> arr = new ArrayList<Students>();
+        mCursor.moveToFirst();
+        if (!mCursor.isAfterLast()) {
+            do {
+                long id = mCursor.getLong(NUM_COLUMN_ID);
+                String Username = mCursor.getString(NUM_COLUMN_USERNAME);
+                String Name = mCursor.getString(NUM_COLUMN_NAME);
+                String Role = mCursor.getString(NUM_COLUMN_ROLE);
+                String Group = mCursor.getString(NUM_COLUMN_GROUPS);
+                String Email = mCursor.getString(NUM_COLUMN_EMAIL);
+                String Password = mCursor.getString(NUM_COLUMN_HASHED_PASSWORD);
+                arr.add(new Students(id, Username, Name, Role, Group, Email, Password));
+            } while (mCursor.moveToNext());
+        }
+        if(!(mCursor.getCount() > 0)) {
+            insert("chikist", "Alex", "U", "10A", "ch1@gmail.com", String.valueOf("chiki1996".hashCode()));
+            insert("chikist1", "Alex1", "U", "10B", "ch2@gmail.com", String.valueOf("chiki1996".hashCode()));
+            insert("chikist2", "Alex2", "U", "11A", "ch3@gmail.com", String.valueOf("chiki1996".hashCode()));
+            insert("chikist3", "Alex3", "U", "11A", "ch4@gmail.com", String.valueOf("chiki1996".hashCode()));
+            insert("chikist4", "Alex4", "U", "8A", "ch5@gmail.com", String.valueOf("chiki1996".hashCode()));
+            insert("chikist5", "Alex5", "U", "7A", "ch6@gmail.com", String.valueOf("chiki1996".hashCode()));
+            insert("chikist6", "Alex6", "U", "7A", "ch7@gmail.com", String.valueOf("chiki1996".hashCode()));
+            insert("chikist7", "Alex7", "U", "9B", "ch8@gmail.com", String.valueOf("chiki1996".hashCode()));
+            insert("chikist8", "Alex8", "U", "9B", "ch9@gmail.com", String.valueOf("chiki1996".hashCode()));
+            insert("chikist9", "Alex9", "U", "10B", "ch10@gmail.com", String.valueOf("chiki1996".hashCode()));
+            insert("chikist10", "Alex10", "U", "7B", "ch@gmail.com", String.valueOf("chiki1996".hashCode()));
+        }
+        return arr;
+    }
+
     private class OpenHelper extends SQLiteOpenHelper {
 
         OpenHelper(Context context) {
@@ -124,13 +154,22 @@ public class DatabaseHelper {
         }
         @Override
         public void onCreate(SQLiteDatabase db) {
+            String query = "CREATE TABLE " + TABLE_NAME + " (" +
+                    COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                    COLUMN_USERNAME + " TEXT, " +
+                    COLUMN_NAME + " TEXT, " +
+                    COLUMN_ROLE + " TEXT,"+
+                    COLUMN_GROUP +" TEXT," +
+                    COLUMN_EMAIL +" TEXT," +
+                    COLUMN_HASHED_PASSWORD +" TEXT);";
+            db.execSQL(query);
 
         }
 
         @Override
         public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-            //db.execSQL("DROP TABLE IF EXISTS " + TABLE_NAME);
-            //onCreate(db);
+            db.execSQL("DROP TABLE IF EXISTS " + TABLE_NAME);
+            onCreate(db);
         }
     }
 }
